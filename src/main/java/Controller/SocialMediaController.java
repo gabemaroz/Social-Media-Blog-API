@@ -1,5 +1,7 @@
 package Controller;
 
+import Service.AccountService;
+import Service.MessageService;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -9,6 +11,15 @@ import io.javalin.http.Context;
  * refer to prior mini-project labs and lecture materials for guidance on how a controller may be built.
  */
 public class SocialMediaController {
+    MessageService messageService;
+    AccountService AccountService;
+
+    public SocialMediaController() {
+        this.messageService = new MessageService();
+        this.AccountService = new AccountService();
+    }
+    
+    
     /**
      * In order for the test cases to work, you will need to write the endpoints in the startAPI() method, as the test
      * suite must receive a Javalin object from this method.
@@ -16,18 +27,81 @@ public class SocialMediaController {
      */
     public Javalin startAPI() {
         Javalin app = Javalin.create();
-        app.get("example-endpoint", this::exampleHandler);
+        app.post("register", this::registerNewUser);
+        app.post("login", this::logInUser);
+        app.post("messages", this::submitNewPost);
+        app.get("messages", this::retrieveAllMessages);
+        app.get("messages/{message_id}", this::retrieveMessageById);
+        app.delete("messages/{message_id}", this::deleteMessageById);
+        app.patch("messages/{message_id}", this::updateMessageById);
+        app.get("accounts/{account_id}/messages", this::retrieveAllMessagesByAccount);;
+        app.start(8000);
 
         return app;
     }
 
     /**
-     * This is an example handler for an example endpoint.
-     * @param context The Javalin Context object manages information about both the HTTP request and response.
+     * 
+     * @param context
      */
-    private void exampleHandler(Context context) {
-        context.json("sample text");
+    private void registerNewUser(Context context) {
+
     }
 
+    /**
+     * 
+     * @param context
+     */
+    private void logInUser(Context context) {
+
+    }
+
+    /**
+     * 
+     * @param context
+     */
+    private void submitNewPost(Context context) {
+
+    }
+
+    /**
+     * 
+     * @param context
+     */
+    private void retrieveAllMessages(Context context) {
+
+    }
+
+    /**
+     * 
+     * @param context
+     */
+    private void retrieveMessageById(Context context) {
+
+    }
+
+    /**
+     * 
+     * @param context
+     */
+    private void deleteMessageById(Context context) {
+
+    }
+
+    /**
+     * 
+     * @param context
+     */
+    private void updateMessageById(Context context) {
+
+    }
+
+    /**
+     * 
+     * @param context
+     */
+    private void retrieveAllMessagesByAccount(Context context) {
+
+    }
 
 }
