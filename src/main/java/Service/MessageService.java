@@ -22,7 +22,10 @@ public class MessageService {
         this.messageDAO = messageDAO;
     }
 
-    public boolean createMessage(Message message) {
+    public Message addMessage(Message message) {
+        if (message.getMessage_text().length() > 255 || message.getMessage_text().length() < 1) {
+            return null;
+        }
         return messageDAO.addMessage(message);
     }
 

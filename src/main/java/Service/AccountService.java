@@ -20,12 +20,19 @@ public class AccountService {
         this.accountDAO = accountDAO;
     }
 
-    public boolean logInAccount(Account account) {
+    public Account createAccount(Account account) {
+        if (account.getUsername().length() < 1 || account.getPassword().length() < 4) {
+            return null;
+        }
+        return accountDAO.createAccount(account);
+    }
+
+    public Account logInAccount(Account account) {
         return accountDAO.logInAccount(account);
     }
 
-    public Account createAccount(Account account) {
-        return accountDAO.createAccount(account);
+    public boolean containsAccountWithId(int accountId) {
+        return accountDAO.containsAccountWithId(accountId);
     }
     
 }

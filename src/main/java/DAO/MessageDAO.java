@@ -8,9 +8,24 @@ import java.sql.*;
 
 public class MessageDAO {
 
-    public boolean addMessage(Message message) {
+    public Message addMessage(Message message) {
         Connection connection = ConnectionUtil.getConnection();
-        return false;
+        try {
+            String sql = "insert into message (posted_by, message_text, time_posted_epoch) values (?, ?, ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(1, message.getPosted_by());
+            preparedStatement.setString(2, message.getMessage_text());
+            preparedStatement.setLong(3, message.getTime_posted_epoch());
+            preparedStatement.executeUpdate();
+            ResultSet pkeyResultSet = preparedStatement.getGeneratedKeys();
+            if (pkeyResultSet.next()) {
+                int messageId = (int) pkeyResultSet.getLong(1);
+                return new Message(messageId, message.getPosted_by(), message.getMessage_text(), message.getTime_posted_epoch());
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
     }
 
     public List<Message> getAllMessages() {
@@ -41,5 +56,5 @@ public class MessageDAO {
         Connection connection = ConnectionUtil.getConnection();
         return false;
     }
-    
+
 }
