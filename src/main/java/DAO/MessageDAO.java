@@ -20,7 +20,8 @@ public class MessageDAO {
             ResultSet pkeyResultSet = preparedStatement.getGeneratedKeys();
             if (pkeyResultSet.next()) {
                 int messageId = (int) pkeyResultSet.getLong(1);
-                return new Message(messageId, message.getPosted_by(), message.getMessage_text(), message.getTime_posted_epoch());
+                return new Message(messageId, message.getPosted_by(), message.getMessage_text(),
+                        message.getTime_posted_epoch());
             }
         } catch (SQLException e) {
             System.out.println(e);
@@ -31,12 +32,36 @@ public class MessageDAO {
     public List<Message> getAllMessages() {
         Connection connection = ConnectionUtil.getConnection();
         List<Message> messages = new ArrayList<>();
+        try {
+            String sql = "select * from message";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                messages.add(new Message(resultSet.getInt(1), resultSet.getInt(2), resultSet.getString(3),
+                        resultSet.getLong(4)));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
         return messages;
     }
 
     public Message getMessageByMessageId(int messageId) {
         Connection connection = ConnectionUtil.getConnection();
-        Message message = new Message();
+        Message message = null;
+        try {
+            String sql = "select * from message where message_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, messageId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                System.out.println("result set");
+                message = new Message(resultSet.getInt(1), resultSet.getInt(2), resultSet.getString(3),
+                resultSet.getLong(4));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
         return message;
     }
 
