@@ -167,7 +167,14 @@ public class SocialMediaController {
      * @param context
      */
     private void retrieveAllMessagesByAccountIdHandler(Context context) {
-
+        int accountId = -1;
+        try {
+            accountId = Integer.parseInt(context.pathParam("accountId"));
+        } catch (NumberFormatException e) {
+            System.out.println(e);
+        } finally {
+            context.json(messageService.getAllMessageByAccountId(accountId));
+        }
     }
 
 }

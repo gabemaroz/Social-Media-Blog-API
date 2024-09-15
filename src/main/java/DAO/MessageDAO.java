@@ -81,6 +81,18 @@ public class MessageDAO {
     public List<Message> getAllMessagesByAccountId(int accountId) {
         Connection connection = ConnectionUtil.getConnection();
         List<Message> messages = new ArrayList<>();
+        try {
+            String sql = "select * from message where posted_by = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, accountId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                messages.add(new Message(resultSet.getInt(1), resultSet.getInt(2), resultSet.getString(3),
+                resultSet.getLong(4)));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
         return messages;
     }
 
