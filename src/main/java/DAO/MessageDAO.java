@@ -8,6 +8,11 @@ import java.sql.*;
 
 public class MessageDAO {
 
+    /**
+     * 
+     * @param message
+     * @return
+     */
     public Message addMessage(Message message) {
         Connection connection = ConnectionUtil.getConnection();
         try {
@@ -29,6 +34,10 @@ public class MessageDAO {
         return null;
     }
 
+    /**
+     * 
+     * @return
+     */
     public List<Message> getAllMessages() {
         Connection connection = ConnectionUtil.getConnection();
         List<Message> messages = new ArrayList<>();
@@ -46,6 +55,11 @@ public class MessageDAO {
         return messages;
     }
 
+    /**
+     * 
+     * @param messageId
+     * @return
+     */
     public Message getMessageByMessageId(int messageId) {
         Connection connection = ConnectionUtil.getConnection();
         Message message = null;
@@ -55,7 +69,6 @@ public class MessageDAO {
             preparedStatement.setInt(1, messageId);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                System.out.println("result set");
                 message = new Message(resultSet.getInt(1), resultSet.getInt(2), resultSet.getString(3),
                 resultSet.getLong(4));
             }
@@ -71,15 +84,41 @@ public class MessageDAO {
         return messages;
     }
 
-    public Message updateMessageByMessageId(int messageId) {
+    /**
+     * 
+     * @param message
+     * @return
+     */
+    public Message updateMessage(Message message) {
         Connection connection = ConnectionUtil.getConnection();
-        Message message = new Message();
-        return message;
-    }
+        try {
+            String sql = "update message set message_text = ? where message_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, message.getMessage_text());
+            preparedStatement.setInt(2, message.getMessage_id());
+            preparedStatement.executeUpdate();
+            return getMessageByMessageId(message.getMessage_id());
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }    
 
-    public boolean deleteMessageByMessageId(int messageId) {
+    /**
+     * 
+     */
+    public Message deleteMessageByMessageId(int messageId) {
         Connection connection = ConnectionUtil.getConnection();
-        return false;
+        Message message = getMessageByMessageId(messageId);
+        try {
+            String sql = "delete * from message where message_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, messageId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return message;
     }
 
 }

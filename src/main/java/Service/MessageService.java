@@ -41,11 +41,14 @@ public class MessageService {
         return messageDAO.getAllMessagesByAccountId(accountId);
     }
 
-    public Message updateMessageByMessageId(int messageId) {
-        return messageDAO.updateMessageByMessageId(messageId);
+    public Message updateMessage(Message message) {
+        if (message.getMessage_text().length() > 255 || message.getMessage_text().length() < 1) {
+            return null;
+        }
+        return messageDAO.updateMessage(message);
     }
 
-    public boolean deleteMessageByMessageId(int messageId) {
+    public Message deleteMessageByMessageId(int messageId) {
         return messageDAO.deleteMessageByMessageId(messageId);
     }
     

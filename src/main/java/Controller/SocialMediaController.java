@@ -128,15 +128,38 @@ public class SocialMediaController {
      * @param context
      */
     private void deleteMessageByMessageIdHandler(Context context) {
-
+        Message message = null;
+        try {
+            int messageId = Integer.parseInt(context.pathParam("messageId"));
+            message = messageService.deleteMessageByMessageId(messageId);
+        } catch (NumberFormatException e) {
+            System.out.println(e);
+        } finally {
+            if (message != null) {
+                context.json(message);
+            }
+        }
     }
 
     /**
      * 
      * @param context
      */
-    private void updateMessageByMessageIdHandler(Context context) {
-
+    private void updateMessageByMessageIdHandler(Context context) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Message message = objectMapper.readValue(context.body(), Message.class);
+        try {
+            int messageId = Integer.parseInt(context.pathParam("messageId"));
+            message.setMessage_id(messageId);
+        } catch (NumberFormatException e) {
+            System.out.println(e);
+        }
+        Message updatedMessage = messageService.updateMessage(message);
+        if (updatedMessage != null) {
+            context.json(updatedMessage);
+        } else {
+            context.status(400);
+        }
     }
 
     /**
