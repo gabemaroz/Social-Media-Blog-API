@@ -5,8 +5,18 @@ import Model.Account;
 
 import java.sql.*;
 
+/**
+ * The AccountDAO class handles the database operations related to the Account entity, 
+ * such as creating accounts, logging in, and checking for existing accounts.
+ */
 public class AccountDAO {
 
+    /**
+     * Checks if an account with the specified username exists in the database.
+     *
+     * @param username The username to check for existence.
+     * @return true if the account exists, false otherwise.
+     */
     private boolean containsAccountWithUsername(String username) {
         Connection connection = ConnectionUtil.getConnection();
         if (username != null) {
@@ -25,6 +35,12 @@ public class AccountDAO {
         return false;
     }
 
+    /**
+     * Checks if an account with the specified account ID exists in the database.
+     *
+     * @param accountId The ID of the account to check for existence.
+     * @return true if the account exists, false otherwise.
+     */
     public boolean containsAccountWithId(int accountId) {
         Connection connection = ConnectionUtil.getConnection();
         try {
@@ -41,6 +57,12 @@ public class AccountDAO {
         return false;
     }
 
+    /**
+     * Creates a new account in the database. If the username already exists, the account is not created.
+     *
+     * @param account The Account object containing the username and password for the new account.
+     * @return The created Account object with the generated account ID, or null if the account creation failed.
+     */
     public Account createAccount(Account account) {
         Connection connection = ConnectionUtil.getConnection();
         if (!containsAccountWithUsername(account.getUsername())) {
@@ -62,6 +84,13 @@ public class AccountDAO {
         return null;
     }
 
+    /**
+     * Logs in an account by verifying the username and password. 
+     * If the credentials match, the corresponding Account object is returned.
+     *
+     * @param account The Account object containing the username and password to log in.
+     * @return The Account object if login is successful, or null if the login failed.
+     */
     public Account logInAccount(Account account) {
         Connection connection = ConnectionUtil.getConnection();
         try {
