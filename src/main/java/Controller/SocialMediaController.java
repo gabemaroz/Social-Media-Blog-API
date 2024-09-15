@@ -19,7 +19,6 @@ public class SocialMediaController {
         this.AccountService = new AccountService();
     }
     
-    
     /**
      * In order for the test cases to work, you will need to write the endpoints in the startAPI() method, as the test
      * suite must receive a Javalin object from this method.
@@ -27,16 +26,14 @@ public class SocialMediaController {
      */
     public Javalin startAPI() {
         Javalin app = Javalin.create();
-        app.post("register", this::registerNewUser);
+        app.post("register", this::registerUser);
         app.post("login", this::logInUser);
-        app.post("messages", this::submitNewPost);
+        app.post("messages", this::createMessage);
         app.get("messages", this::retrieveAllMessages);
-        app.get("messages/{message_id}", this::retrieveMessageById);
-        app.delete("messages/{message_id}", this::deleteMessageById);
-        app.patch("messages/{message_id}", this::updateMessageById);
-        app.get("accounts/{account_id}/messages", this::retrieveAllMessagesByAccount);;
-        app.start(8000);
-
+        app.get("messages/{messageId}", this::retrieveMessageByMessageId);
+        app.delete("messages/{messageId}", this::deleteMessageByMessageId);
+        app.patch("messages/{messageId}", this::updateMessageByMessageId);
+        app.get("accounts/{accountId}/messages", this::retrieveAllMessagesByAccountId);;
         return app;
     }
 
@@ -44,7 +41,7 @@ public class SocialMediaController {
      * 
      * @param context
      */
-    private void registerNewUser(Context context) {
+    private void registerUser(Context context) {
 
     }
 
@@ -60,7 +57,7 @@ public class SocialMediaController {
      * 
      * @param context
      */
-    private void submitNewPost(Context context) {
+    private void createMessage(Context context) {
 
     }
 
@@ -69,6 +66,14 @@ public class SocialMediaController {
      * @param context
      */
     private void retrieveAllMessages(Context context) {
+        
+    }
+
+    /**
+     * 
+     * @param context
+     */
+    private void retrieveMessageByMessageId(Context context) {
 
     }
 
@@ -76,7 +81,7 @@ public class SocialMediaController {
      * 
      * @param context
      */
-    private void retrieveMessageById(Context context) {
+    private void deleteMessageByMessageId(Context context) {
 
     }
 
@@ -84,7 +89,7 @@ public class SocialMediaController {
      * 
      * @param context
      */
-    private void deleteMessageById(Context context) {
+    private void updateMessageByMessageId(Context context) {
 
     }
 
@@ -92,15 +97,7 @@ public class SocialMediaController {
      * 
      * @param context
      */
-    private void updateMessageById(Context context) {
-
-    }
-
-    /**
-     * 
-     * @param context
-     */
-    private void retrieveAllMessagesByAccount(Context context) {
+    private void retrieveAllMessagesByAccountId(Context context) {
 
     }
 
