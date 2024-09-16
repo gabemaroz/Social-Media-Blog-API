@@ -194,4 +194,5 @@ public class SocialMediaController {
             context.json(messageService.getAllMessageByAccountId(accountId));
         }
     }
+    
 }
